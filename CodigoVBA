@@ -1,0 +1,63 @@
+Private Sub SomaNegativos()
+Dim valorNegativo As Integer
+Dim TotalValorNegativo As Integer
+Dim rng As Range: Set rng = Sheets("Controle de Ponto").Application.Range("F9:F39")
+Dim i As Integer
+
+TotalValorNegativo = 0
+
+For i = 1 To rng.Rows.Count
+    If rng.Cells(RowIndex:=i, ColumnIndex:=1).Value < 0 Then
+        valorNegativo = rng.Cells(RowIndex:=i, ColumnIndex:="F").Value
+    End If
+    TotalValorNegativo = TotalValorNegativo + valorNegativo
+Next
+
+Sheets("Controle de Ponto").Application.Range("D44") = TotalValorNegativo
+
+MsgBox (valorNegativo)
+
+End Sub
+
+Private Sub comboBoxJustificativas_Change()
+    Dim rng As Range: Set rng = Sheets("Controle de Ponto").Application.Range("B9:E39")
+    Dim linhaSelecionada As Integer
+    With rng
+        linhaSelecionada = ActiveCell.Row
+    End With
+    
+    Dim colunas(3) As String
+    colunas(0) = "B"
+    colunas(1) = "C"
+    colunas(2) = "D"
+    colunas(3) = "E"
+        
+    Select Case comboBoxJustificativas.Value
+    Case "Abonado"
+        For Each col In colunas
+            Sheets("Controle de Ponto").Cells(RowIndex:=linhaSelecionada, ColumnIndex:=col).Value = "Abonado"
+        Next
+    Case "Atestado"
+        For Each col In colunas
+            Sheets("Controle de Ponto").Cells(RowIndex:=linhaSelecionada, ColumnIndex:=col).Value = "Atestado"
+        Next
+    Case "Falta"
+        For Each col In colunas
+            Sheets("Controle de Ponto").Cells(RowIndex:=linhaSelecionada, ColumnIndex:=col).Value = "Falta"
+        Next
+    Case "Feriado"
+        For Each col In colunas
+            Sheets("Controle de Ponto").Cells(RowIndex:=linhaSelecionada, ColumnIndex:=col).Value = "Feriado"
+        Next
+    End Select
+    
+End Sub
+
+Private Sub comboBoxMeses_Change()
+    Dim mesAtual As String
+
+    mesAtual = Format(Date, "mmmm")
+    mesAtual = StrConv(mesAtual, vbProperCase)
+
+    MsgBox (mesAtual)
+End Sub
